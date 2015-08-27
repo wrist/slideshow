@@ -1,0 +1,20 @@
+{
+  "name": "slideshow",
+  "version": "0.0.1",
+  "authors": [
+    "wrist <stoicheia1986@gmail.com>"
+  ],
+  "description": "slideshow app for wedding photos",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vue": "~0.12.12"
+  }
+}
