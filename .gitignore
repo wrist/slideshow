@@ -1,3 +1,4 @@
 *~
-img/*
+public/img/*
 bower_components/*
+node_modules/*
