@@ -16,7 +16,7 @@ var ls = function (dir_path, callback) {
                 files.filter(function(file){
                         return fs.statSync(path.join(dir_path, file)).isFile();
                 }).forEach( function (file) {
-                        fileList.push(path.join(dir_path, file));
+                        fileList.push(path.relative(dir_path + "../../..", path.join(dir_path, file)));
                 });
                 callback(null, fileList);
             }
@@ -32,7 +32,7 @@ app.get("/", function (req, res) {
 
 app.get("/images", function(req, res){
         console.log('[get] "/images"');
-        ls(process.argv[2], function (err, fileList) {
+        ls(path.resolve(process.argv[2]), function (err, fileList) {
                 if(err){
                     throw err;
                 } else {
