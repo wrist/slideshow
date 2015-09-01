@@ -6,51 +6,69 @@ document.addEventListener( "DOMContentLoaded", function () {
             }).then(function(json){
                     var images = json["images"];
                     console.log(images);
-                    self.$data.images = images;
+                    self.images = images;
             }).done(function () {
-                    self.$data.image = self.$data.images[self.$data.index];
-                    self.$data.message = self.$data.image;
+                    self.image = self.images[self.index];
+                    self.message = self.image;
             });
         }
 
-        var slideshow = new Vue({
+        var vm = new Vue({
                 el: '#slideshow',
                 data: {
                     message: '',
                     images: [],
                     image: "",
-                    index: 0
+                    index: 0,
+                    max_width:  window.innerWidth,
+                    max_height: window.innerHeight
                 },
                 created: function(){
-                    // this.image = "public/img/test0.jpg";
                     getImageList(this);
+                },
+                methods: {
+                    resize: function () {
+                        var img = $("#slideshow img");
+                        img.css('width', 'auto');
+                        img.css('height', 'auto');
+
+                        var rate = 1.0;
+                        var width  = img.width();
+                        var height = img.height();
+
+                        // adjust height to fit height
+                        rate = this.max_height / height;
+                        width  *= rate;
+                        height *= rate;
+
+                        // if width over inner window, resize again
+                        if( width > this.max_width ){
+                            rate = this.max_width / width;
+                            width  *= rate;
+                            height *= rate;
+                        }
+
+                        // set size
+                        img.width(width);
+                        img.height(height);
+                    }
                 }
         });
 
         // update images
         setInterval(function () {
-                if( slideshow.$data.index === (slideshow.$data.images.length - 1) ){
-                    slideshow.$data.index = 0;
+                if( vm.index === (vm.images.length - 1) ){
+                    vm.index = 0;
                 } else {
-                    slideshow.$data.index++;
+                    vm.index++;
                 }
 
-                // slideshow.$data.image = "public/img/test" + slideshow.$data.index + ".jpg";
-                slideshow.$data.image = slideshow.$data.images[slideshow.$data.index];
-                slideshow.$data.message = slideshow.$data.image;
-
-                // get image list
-                // getImageList(slideshow);
-                /*
-                $.ajax({
-                        url: "http://localhost:3000/images"
-                }).then(function(json){
-                        var images = json["images"];
-                        console.log(images);
-                        slideshow.$data.images = images;
-                });
-                */
+                vm.image = vm.images[vm.index];
+                vm.message = vm.image;
             },
             4000
         );
+
+        // update image list every 5 minitus
+        setInterval(function () { getImageList(vm); }, 1000 * 60 * 5);
 });

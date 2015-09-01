@@ -1,0 +1,9 @@
+#slideshow {
+  text-align: center;
+}
+
+.image-text {
+  position: absolute;
+  left: 1%;
+  top:  2%;
+}

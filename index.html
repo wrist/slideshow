@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
+    <head>
+        <meta charset="UTF-8">
+        <title>Slideshow App</title>
+        <link rel="stylesheet" type="text/css" href="public/css/style.css">
+        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="bower_components/vue/dist/vue.min.js"></script>
+        <script type="text/javascript" src="public/js/app.js"></script>
 
-<title>Hello Vue</title>
-
-<link rel="stylesheet" type="text/css" href="public/css/style.css">
-<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="bower_components/vue/dist/vue.min.js"></script>
-<script type="text/javascript" src="public/js/app.js"></script>
-
-</head>
-<body>
-    <div id="slideshow">
-        <p>{{message}}</p>
-        <img src={{image}} width="100%">
-    </div>
-
-
-</body>
+    </head>
+    <body>
+        <div id="slideshow">
+            <p class="image-text">{{message}}</p>
+            <img src={{image}} v-on="load:resize">
+        </div>
+    </body>
 </html>
 
