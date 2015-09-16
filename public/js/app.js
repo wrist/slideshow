@@ -40,8 +40,8 @@ document.addEventListener( "DOMContentLoaded", function () {
                 }
 
                 // if height is over inner window, resize based on both
-                if( width > max_width ){
-                    rate = (max_width / org_width) * (max_height / org_height);
+                if( height > max_height ){
+                    rate = (max_width / org_width) * (org_height / max_height);
                     width  = org_width * rate;
                     height = org_height * rate;
                 }
