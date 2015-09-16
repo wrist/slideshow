@@ -1,7 +1,7 @@
 "use strict";
 
 document.addEventListener( "DOMContentLoaded", function () {
-        var get_image_list_interval_min = 5;
+        var get_image_list_interval_min = 3;
         var change_image_interval_ms = 6000;
 
         var getImageList = function (self) {
@@ -86,7 +86,12 @@ document.addEventListener( "DOMContentLoaded", function () {
 
                 // set image path and pre-load
                 vm.image_index += 1;
-                vm.image_index = vm.image_index % vm.image_list.length;
+                if (vm.image_list.length === 0) {  // x % 0 => NaN
+                    vm.image_index = 0;
+                } else {
+                    vm.image_index = vm.image_index % vm.image_list.length;
+                }
+
                 img.src = vm.image_list[vm.image_index];
 
                 vm.ab_buffer[next_ab_index] = img;
@@ -104,6 +109,9 @@ document.addEventListener( "DOMContentLoaded", function () {
 
                 // toggle ab_index
                 vm.ab_index = (vm.ab_index == 0) ? 1 : 0;
+
+                // debug
+                // console.log("ab: %d, index: %d, src: %s, list_length: %d", vm.ab_index, vm.image_index, img.src, vm.image_list.length);
             },
             change_image_interval_ms
         );
