@@ -1,6 +1,9 @@
 "use strict";
 
 document.addEventListener( "DOMContentLoaded", function () {
+        var get_image_list_interval_min = 5;
+        var change_image_interval_ms = 6000;
+
         var getImageList = function (self) {
             // get image list
             return $.ajax({
@@ -16,22 +19,31 @@ document.addEventListener( "DOMContentLoaded", function () {
             var img = new Image();
             img.onload = function () {
                 var rate = 1.0;
-                var width  = img.width;
-                var height = img.height;
+                var org_width  = img.width;
+                var org_height = img.height;
+                var width;
+                var height;
 
                 img.style.width = 'auto';
                 img.style.height = 'auto';
 
                 // adjust height to fit height
-                rate = max_height / img.height;
-                width  *= rate;
-                height *= rate;
+                rate = max_height / org_height;
+                width  = org_width * rate;
+                height = org_height * rate;
 
-                // if width is over inner window, resize again
+                // if width is over inner window, resize based on width
                 if( width > max_width ){
-                    rate = max_width / img.width;
-                    width  *= rate;
-                    height *= rate;
+                    rate = max_width / org_width;
+                    width  = org_width * rate;
+                    height = org_height * rate;
+                }
+
+                // if height is over inner window, resize based on both
+                if( width > max_width ){
+                    rate = (max_width / org_width) * (max_height / org_height);
+                    width  = org_width * rate;
+                    height = org_height * rate;
                 }
 
                 // set size
@@ -84,14 +96,18 @@ document.addEventListener( "DOMContentLoaded", function () {
                 $("#slideshow").append(vm.ab_buffer[vm.ab_index]);
 
                 // update message
-                vm.message = vm.ab_buffer[vm.ab_index].src.split("/").pop();
+                try {
+                    vm.message = decodeURIComponent(vm.ab_buffer[vm.ab_index].src.split("/").pop());
+                } catch(e) {
+                    vm.message= vm.ab_buffer[vm.ab_index].src;
+                }
 
                 // toggle ab_index
                 vm.ab_index = (vm.ab_index == 0) ? 1 : 0;
             },
-            4000
+            change_image_interval_ms
         );
 
         // update image list every 5 minitus
-        setInterval(function () { getImageList(vm); }, 1000 * 60 * 5);
+        setInterval(function () { getImageList(vm); }, 1000 * 60 * get_image_list_interval_min);
 });
