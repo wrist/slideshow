@@ -39,13 +39,6 @@ document.addEventListener( "DOMContentLoaded", function () {
                     height = org_height * rate;
                 }
 
-                // if height is over inner window, resize based on both
-                if( height > max_height ){
-                    rate = (max_width / org_width) * (org_height / max_height);
-                    width  = org_width * rate;
-                    height = org_height * rate;
-                }
-
                 // set size
                 img.width  = width;
                 img.height = height;
